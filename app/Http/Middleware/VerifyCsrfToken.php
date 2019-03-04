@@ -1,24 +1,30 @@
-<?php
+<?php namespace App\Http\Middleware;
 
-namespace App\Http\Middleware;
+use Closure;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+class VerifyCsrfToken extends BaseVerifier {
 
-class VerifyCsrfToken extends Middleware
-{
-    /**
-     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
-     *
-     * @var bool
-     */
-    protected $addHttpCookie = true;
+	protected $except_urls = [
+    'authy/*',
+  ];
+	/**
+	 * Handle an incoming request.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \Closure  $next
+	 * @return mixed
+	 */
+	public function handle($request, Closure $next)
+	{
+    $regex = '#' . implode('|', $this->except_urls) . '#';
 
-    /**
-     * The URIs that should be excluded from CSRF verification.
-     *
-     * @var array
-     */
-    protected $except = [
-        //
-    ];
+    if ($this->isReading($request) || $this->tokensMatch($request) || preg_match($regex, $request->path()))
+    {
+      return $this->addCookieToResponse($request, $next($request));
+    }
+
+    throw new TokenMismatchException;
+  }
+
 }

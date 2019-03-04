@@ -1,71 +1,89 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Two-Factor Authentication with Laravel and Authy
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+In this example application, you will learn how to create a login system for Laravel applications secured with 2FA using Authy.
 
-## About Laravel
+[Learn more about this code in our interactive code walkthrough](https://www.twilio.com/docs/howto/walkthrough/two-factor-authentication/php/laravel).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Run the Application
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Clone the repository and `cd` into it.
+1. Install the application dependencies with [Composer](https://getcomposer.org/)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+   ```bash
+   $ composer install
+   ```
+1. The application uses PostgreSQL as persistence layer. If you
+  don't have it already, you should install it. The easiest way is by
+  using [Postgres.app](http://postgresapp.com/).
 
-## Learning Laravel
+1. Create a database.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+   ```bash
+   $ createdb authy_laravel
+   ```
+1. Copy the sample configuration file and edit it to match your configuration.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost you and your team's skills by digging into our comprehensive video library.
+   ```bash
+   $ cp .env.example .env
+   ```
 
-## Laravel Sponsors
+   You can find your Authy Api Key for Production at https://www.twilio.com/console/authy/.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+1. Generating an `APP_KEY`:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
+   ```bash
+   $ php artisan key:generate
+   ```
+1. Running the migrations:
 
-## Contributing
+   ```bash
+   $ php artisan migrate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. Expose your application to the wider internet using ngrok. You can look
+   [here](#expose-the-application-to-the-wider-internet) for more details. This step
+   is important because the application won't work as expected if you run it through the
+   localhost.
 
-## Security Vulnerabilities
+   ```bash
+   $ ngrok http 8000
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   Once ngrok is running, open up your browser and go to your ngrok URL.
+   It will look something like this: `http://9a159ccf.ngrok.io`
 
-## License
+1. Running the application using Artisan.
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+   ```bash
+   $ php artisan serve
+   ```
+
+1. Go to https://www.twilio.com/console/authy/. On the menu to the right you'll find the
+   **Settings**. Go to **OneTouch settings** and update the _Endpoint/URL_ with the
+   endpoint you created. Something like this:
+
+   `http://[your-ngrok-subdomain].ngrok.io/authy/callback`
+
+   If you deployed this application to production, the the Endpoint/URL should look like this:
+
+   `http://[your-domain].com/authy/callback`
+
+## Run the tests
+
+1. Download phpunit version 4
+
+    ```bash
+    $ wget https://phar.phpunit.de/phpunit-4.0.9.phar -O phpunit.phar
+    ```
+
+1. Run phpunit
+
+    ```bash
+    $ php phpunit.phar
+    ```
+
+## Meta
+
+* No warranty expressed or implied. Software is as is. Diggity.
+* [MIT License](http://www.opensource.org/licenses/mit-license.html)
+* Lovingly crafted by Twilio Developer Education.
