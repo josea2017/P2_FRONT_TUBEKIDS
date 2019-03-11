@@ -1,0 +1,27 @@
+#titulo_registro_eshop{
+	position: absolute;
+	left: 50%;
+}
+#link_registro_login{
+	color: #1a8cff;
+	font-size: 20px;
+}
+.div_tabla_registro{
+	display: flex;
+	flex-wrap: wrap;
+	width: 50vw;
+	height: 50vw;
+	margin-top: 5%;
+	margin-left: 35%;
+}
+
+.div_tabla_registro .tabla_registro td input{
+	display: inline-block;
+    float: right;
+}
+
+.div_tabla_registro .tabla_registro td button{
+	margin-left: 45%;
+	width: 55%;
+}
+
