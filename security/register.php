@@ -13,33 +13,44 @@ if(isset($_POST['btn_register'])){
         $age_verify = $register_model->verify_age($_POST['birthday']);
         //Validar que el registro sea por parte de persona mayor de edad
         if($age_verify == true){
-          //Si todo se encuentra bien, estamos listos para registrar un usuario nuevo
-          $response = $register_model->register($_POST['name'], $_POST['last_name'], $_POST['email'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $_POST['password'], $_POST['confirm_password']);
-          var_dump($response);
+          $email_available = $register_model->verify_email_available($_POST['email']);
+          //Validar que el email(username) se encuentra disponible
+          if($email_available == true){
+            //Si todo se encuentra bien, estamos listos para registrar un usuario nuevo
+            $response = $register_model->register($_POST['name'], $_POST['last_name'], $_POST['email'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $_POST['password'], $_POST['confirm_password']);
+            //var_dump($response);
+             return header("Location: ./login.php?email=" . $_POST['email']);
+          }else{
+              ?>
+                <div class="alert alert-danger" role="alert">
+                  Wrong, email is not available!
+                </div>
+              <?php
+          }
         }else{
           //Mansaje de error en el caso que la persona no sea mayor de edad
           ?>
-          <div class="alert alert-danger" role="alert">
-            Wrong, age not allowed!
-          </div>
+            <div class="alert alert-danger" role="alert">
+              Wrong, age not allowed!
+            </div>
           <?php
         }
 
       }else{
         //Mensaje de error en el caso que las contraseñas sean diferentes
         ?>
-        <div class="alert alert-danger" role="alert">
-          Wrong, passwords are differents!
-        </div>
+          <div class="alert alert-danger" role="alert">
+            Wrong, passwords are differents!
+          </div>
         <?php
       } 
 
     }else{
       //Mensaje de error en el caso que los datos no se encuentren completos
       ?>
-      <div class="alert alert-danger" role="alert">
-        Wrong, incomplete data!
-      </div>
+        <div class="alert alert-danger" role="alert">
+          Wrong, incomplete data!
+        </div>
       <?php
     }
 
@@ -62,7 +73,7 @@ if(isset($_POST['btn_register'])){
         <?php
 	        $menu = [
 	          'Login' => './login.php',
-            'Back' => '../index.php'
+            'Welcome' => '../index.php'
 	        ];
         ?>
     </ul>

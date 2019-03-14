@@ -37,6 +37,42 @@ class Register
 
     }
 
+    public function verify_email_available($email){
+      $available = false;
+      $user_array = array(
+        'email'      => $email
+      );
+      $body = '{"email":' .'"'. $email . '"' . '}';
+
+      $url = "http://localhost:8000/api/findUserPerEmail";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      /*
+      if ( $status != 201 ) {
+          $available = false;
+          die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+      }*/
+      curl_close($curl);
+      $response = json_decode($json_response, true);
+      if($response == null){
+        $available = true;
+      }else{
+        $available = false;
+      }
+      return $available;
+    }
+
+
+
     public function register($name, $last_name, $email, $phone_number, $country_code, $birthday, $password, $confirm_password){
 
       $user_array = array(
@@ -49,7 +85,7 @@ class Register
         'password'      => $password,
         'password_confirmation'      => $confirm_password
       );
-      echo $country_code;
+      //echo $country_code;
 /*
       $options = array(
           'http' => array(
