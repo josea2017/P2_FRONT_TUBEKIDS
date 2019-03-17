@@ -14,13 +14,33 @@ $tituloPagina = 'New Video';
 require_once '../shared/header.php';
 require_once '../shared/menu.php';
 require_once '../shared/db.php';
-$user_email = $_GET["user_email"] ?? '';
+//$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
 //echo $email_cookie;
+if(isset($_POST['btn_new_video'])){
+    $resource = $_FILES['resource']['name'];
+    $all_data = $video_model->verify_all_data($email_cookie, $resource, $_POST['name']);
+    //Verificar que todos los datos del formulario esten completos
+    if($all_data == true){
+        //echo "Todos los datos";
+        $response = $video_model->save_video($email_cookie, $resource, $_POST['name']);
+        //var_dump($response);
+        //$response["video"];
+        ?>
+          <div class="alert alert-success" role="alert">
+            Done successfully!
+          </div>
+        <?php
+    }else{
+        ?>
+          <div class="alert alert-danger" role="alert">
+            Wrong, incomplete data!
+          </div>
+        <?php
+    }
+}
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
-
-
 <form method="POST" enctype="multipart/form-data">
 <div class="caja_login" style="display: flex; position: absolute; margin-top: -7%; margin-left: 47%;">
   <img src="../assets/images/new_video.png">
@@ -44,13 +64,6 @@ $email_cookie =  $_COOKIE['email'];
 </form>
 
  <?php 
- /*
- <select name="cars">
-    <option value="volvo">Volvo</option>
-    <option value="saab">Saab</option>
-    <option value="fiat">Fiat</option>
-    <option value="audi">Audi</option>
-  </select>
-  */
+
  require_once '../shared/footer.php';
   ?>
