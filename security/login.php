@@ -4,8 +4,47 @@ require_once '../shared/db.php';
 require_once '../shared/header.php';
 $email = $_GET["email"] ?? '';
 
-
+if(isset($_POST['btn_login'])){
+$verify_all_data = $login_model->verify_all_data($_POST['email'], $_POST['password']);
+//Verificamos que tenemos todos los datos completos
+if($verify_all_data == true){
+  $login_user_token = $login_model->login_user_token($_POST['email'], $_POST['password']);
+  //echo $login_user_token;
+  //echo $login_user_token['token'];
+  //Verificamos que tenemos un token de acceso
+  if($login_user_token != false){
+    //echo $login_user_token['token'];
+    //$token = $login_user_token['token'];
+    ?>
+      <script>
+        localStorage.setItem('login_token', '<?php echo $login_user_token['token']; ?>');
+        localStorage.setItem('email', '<?php echo $_POST['email']; ?>');
+        window.location="../home/index.php";
+      </script>
+    <?php
+  }else{
+    ?>
+      <script>
+        localStorage.removeItem('login_token');
+      </script>
+      <div class="alert alert-danger" role="alert">
+          Wrong, incorrect login data!
+      </div>
+    <?php
+  }
+}else{
+    ?>
+      <script>
+        localStorage.removeItem('login_token');
+      </script>
+      <div class="alert alert-danger" role="alert">
+          Wrong, incomplete data!
+      </div>
+    <?php
+  }
+}
 ?>
+
 
 
 <link rel="stylesheet" type="text/css" href="../assets/css/register_style.css">
@@ -54,6 +93,11 @@ $email = $_GET["email"] ?? '';
     </table>
   </div>
 </form>
+
+<script>
+    var token = localStorage.getItem('login_token');
+    document.write(token);
+</script>
 
  <?php 
  require_once '../shared/footer.php';
