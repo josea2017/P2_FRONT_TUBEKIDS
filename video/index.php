@@ -25,7 +25,7 @@ require_once '../shared/db.php';
         <tr>
           <th>RESOURCE</th>
           <th>NAME</th>
-          <th><a class="btn btn-success" name="producto_nuevo" href="">Add new</a></th>
+          <th><a class="btn btn-success" name="producto_nuevo" href="../video/new.php">Add new</a></th>
         </tr>
     </thead>
         <?php /*
