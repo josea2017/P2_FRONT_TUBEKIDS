@@ -18,14 +18,20 @@ require_once '../shared/db.php';
 $email_cookie =  $_COOKIE['email'];
 //echo $email_cookie;
 if(isset($_POST['btn_new_video'])){
-    $resource = $_FILES['resource']['name'];
+    $resource = $_FILES['file']['name'];
     $all_data = $video_model->verify_all_data($email_cookie, $resource, $_POST['name']);
     //Verificar que todos los datos del formulario esten completos
     if($all_data == true){
         //echo "Todos los datos";
         $response = $video_model->save_video($email_cookie, $resource, $_POST['name']);
-        //var_dump($response);
-        //$response["video"];
+        $file_size =$_FILES['file']['size'];
+        echo $file_size;
+        $name= $_FILES['file']['name'];
+        $tmp_name= $_FILES['file']['tmp_name'];
+        //$path= '../../videos';
+        $path= __DIR__ . '/../videos/';
+        //C:\xampp\htdocs\P2_FRONT_TUBEKIDS\videos
+        move_uploaded_file($tmp_name, $path.$name);
         ?>
           <div class="alert alert-success" role="alert">
             Done successfully!
@@ -51,7 +57,7 @@ if(isset($_POST['btn_new_video'])){
       <td>USER EMAIL: <input type="text" disabled="disabled" name="user_email" autofocus placeholder="User email" value="<?= isset($_POST['user_email']) ? $_POST['user_email'] : $email_cookie; ?>"></td>
     </tr>
     <tr>
-      <td>VIDEO: <div style="display: inline-flex; position: absolute; margin-left: 42px;"><input type="file" name="resource"></div></td>
+      <td>VIDEO: <div style="display: inline-flex; position: absolute; margin-left: 42px;"><input type="file" name="file" id="file" ></div></td>
     </tr>
     <tr>
       <td>NAME: <input type="text" name="name" placeholder="name" value="<?= isset($_POST['name']) ? $_POST['name'] : ''; ?>"></td>
