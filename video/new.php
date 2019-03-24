@@ -16,6 +16,7 @@ require_once '../shared/menu.php';
 require_once '../shared/db.php';
 //$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
+echo $email_cookie;
 //echo $email_cookie;
 if(isset($_POST['btn_new_video'])){
     $resource = $_FILES['file']['name'];
@@ -23,15 +24,15 @@ if(isset($_POST['btn_new_video'])){
     //Verificar que todos los datos del formulario esten completos
     if($all_data == true){
         //echo "Todos los datos";
-        $response = $video_model->save_video($email_cookie, $resource, $_POST['name']);
+       $response = $video_model->save_video($email_cookie, $resource, $_POST['name'], $_FILES);
+        //var_dump($_FILES);
         $file_size =$_FILES['file']['size'];
-        echo $file_size;
         $name= $_FILES['file']['name'];
         $tmp_name= $_FILES['file']['tmp_name'];
         //$path= '../../videos';
         $path= __DIR__ . '/../videos/';
         //C:\xampp\htdocs\P2_FRONT_TUBEKIDS\videos
-        move_uploaded_file($tmp_name, $path.$name);
+        //move_uploaded_file($tmp_name, $path.$name);
         ?>
           <div class="alert alert-success" role="alert">
             Done successfully!

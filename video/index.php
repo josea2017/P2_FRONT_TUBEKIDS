@@ -12,6 +12,22 @@ $tituloPagina = 'Video';
 require_once '../shared/header.php';
 require_once '../shared/menu.php';
 require_once '../shared/db.php';
+$videos_list = $video_model->videos_list();
+$path = __DIR__ . '/../videos/';
+//var_dump($videos_list[0]);
+$_FILES = $videos_list[0];
+$prueba = "prueba.mp4";
+/*echo $_FILES['name'];
+echo $_FILES['size'];
+echo $_FILES['tmp_name'];
+echo $_FILES['type'];*/
+/*
+<video width="320" height="240" controls>
+          <source src="/P2_FRONT_TUBEKIDS/videos/prueba.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        ///"<source src='/P2_FRONT_TUBEKIDS/videos/prueba.mp4'  type='video/mp4'>"
+*/
 
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
@@ -27,32 +43,29 @@ require_once '../shared/db.php';
           <th>NAME</th>
           <th><a class="btn btn-success" name="producto_nuevo" href="../video/new.php">Add new</a></th>
         </tr>
+        
     </thead>
-        <?php /*
-            $lista_imagenes = $producto_modelo->listarTodasImagenes();
-  	      	$lista_productos = $producto_modelo->listarTodosProductos();
-            $max = sizeof($lista_imagenes);
-            if(!empty($lista_productos))
+        <?php
+
+            $max = sizeof($videos_list);
+            if(!empty($videos_list))
             {
     	        for ($i=0; $i < $max; $i++) {
-    	            echo "<tr>";
-    	            echo "<td>" . $lista_productos[$i]['id_producto'] . "</td>";
-    	            echo "<td>" . $lista_productos[$i]['nombre'] . "</td>";
-                  echo "<td>" . $lista_productos[$i]['descripcion'] . "</td>";
-                  $data = $lista_imagenes[$i]['imagen'];
-                  $img = "<img width='20%' src= 'data:image/jpeg;base64, $data' />";
-                  echo "<td>" . $img . "</td>";
-                  echo "<td>" . $lista_productos[$i]['stock'] . "</td>";
-                  echo "<td>" . $lista_productos[$i]['precio'] . "</td>";
-                  echo "<td>" . $lista_productos[$i]['id_categoria'] . "</td>";
+                  echo "<tr>";
+                  echo "<td>";
+                  echo "<video width='320' height='240' controls>".
+                          "<source src='/P2_FRONT_TUBEKIDS/videos/" . $videos_list[$i]['name'] . "'". "type='video/mp4'>" .
+                        "</video>" . 
+                        "</td>";
+                  echo "<td>" . $videos_list[$i]['name'] . "</td>";
                   echo "<td>" .
-                     " <a style='font-size: 13px;' class='btn btn-primary' role='button' href='./editar.php?id_producto=" . $lista_productos[$i]['id_producto'] . "&nombre= " . $lista_productos[$i]['nombre'] . "&descripcion= " . $lista_productos[$i]['descripcion'] . "&stock= " . $lista_productos[$i]['stock'] . "&precio= " . $lista_productos[$i]['precio'] . "'>Editar</a>".
+                     " <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Editar</a>".
                      
-                     " <a style='font-size: 13px;' class='btn btn-danger' role='button' href='./eliminar.php?id_producto=" . $lista_productos[$i]['id_producto'] . "&nombre= " . $lista_productos[$i]['nombre'] . "&descripcion= " . $lista_productos[$i]['descripcion'] . "&stock= " . $lista_productos[$i]['stock'] . "&precio= " . $lista_productos[$i]['precio'] . "'>Eliminar</a>".
+                     " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Eliminar</a>".
                     "</td>";
     	            echo "</tr>";
     	        }
-           }*/
+           }
 
          ?>
   </table>

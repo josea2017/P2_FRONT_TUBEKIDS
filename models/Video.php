@@ -17,11 +17,12 @@ class Video
       
     }
 
-    public function save_video($user_email, $resource, $name){
+    public function save_video($user_email, $resource, $name, $video){
       $video_array = array(
         'user_email'      => $user_email,
         'resource'    => $resource,
-        'name'      => $name
+        'name'      => $name,
+        'video'    => $video
       );
 
       $url = "http://localhost:8000/api/video";    
@@ -47,6 +48,38 @@ class Video
       return $response;
 
     }
+
+    public function videos_list(){
+      // Array en el que obtendremos los resultados
+      $array_videos = array();
+
+      // Agregamos la barra invertida al final en caso de que no exista
+      //if(substr($directorio, -1) != "/") $directorio .= "/";
+      $path = __DIR__ . '/../videos/';
+
+      // Creamos un puntero al directorio y obtenemos el listado de archivos
+      $dir = @dir($path) or die("getFileList: Error abriendo el directorio $path para leerlo");
+      while(($archivo = $dir->read()) !== false) {
+          // Obviamos los archivos ocultos
+          if($archivo[0] == ".") continue;
+          /*if(is_dir($path . $archivo)) {
+             // var_dump($archivo[0]);
+          }*/ else if (is_readable($path . $archivo)) {
+              //echo "No encontrado";
+               $array_videos[] = array(
+                "name" => basename($path . $archivo),
+                "size" => filesize($path . $archivo),
+                "tmp_name"   => tempnam($path . $archivo, 'tmp_name'),
+                "type"     => end(explode(".", $path . $archivo)),
+              );
+          }
+      }
+      //var_dump($array_videos);
+      $dir->close();
+      return $array_videos;
+    }
+
+
 
   }
 }
