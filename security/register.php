@@ -18,6 +18,7 @@ if(isset($_POST['btn_register'])){
           if($email_available == true){
             //Si todo se encuentra bien, estamos listos para registrar un usuario nuevo
             $response = $register_model->register($_POST['name'], $_POST['last_name'], $_POST['email'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $_POST['password'], $_POST['confirm_password']);
+            $register_model->create_user_video_folder($_POST['email']);
             //var_dump($response);
              return header("Location: ./login.php?email=" . $_POST['email']);
           }else{

@@ -1,6 +1,14 @@
 <script>
 if(localStorage.getItem("login_token")){
   console.log(localStorage.getItem("login_token"));
+  var email_cookie = localStorage.getItem("email");
+  console.log(email_cookie); 
+  //var res = str1.concat(str2);
+  var string_cookie = "email=".concat(email_cookie);
+  //document.cookie = "cookiename=cookievalue"
+  document.cookie = string_cookie;
+  //setcookie("TestCookie", $value);
+  
 }else{
   //console.log("No hay datos");
   window.location="../security/login.php";
@@ -12,22 +20,21 @@ $tituloPagina = 'Video';
 require_once '../shared/header.php';
 require_once '../shared/menu.php';
 require_once '../shared/db.php';
-$videos_list = $video_model->videos_list();
-$path = __DIR__ . '/../videos/';
-//var_dump($videos_list[0]);
-$_FILES = $videos_list[0];
-$prueba = "prueba.mp4";
-/*echo $_FILES['name'];
-echo $_FILES['size'];
-echo $_FILES['tmp_name'];
-echo $_FILES['type'];*/
-/*
-<video width="320" height="240" controls>
-          <source src="/P2_FRONT_TUBEKIDS/videos/prueba.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        ///"<source src='/P2_FRONT_TUBEKIDS/videos/prueba.mp4'  type='video/mp4'>"
-*/
+$email_cookie =  $_COOKIE['email'];
+//echo $email_cookie;
+$response = null;
+$response = $video_model->load_videos_from_server($email_cookie);
+if($response != null){
+//var_dump($response);
+$array_videos = array();
+$array_videos = $response;
+$max = sizeof($response);
+$databaseVideosDetail = $video_model->databaseVideosDetail($email_cookie);
+//echo $max;
+//$name= $value['file']['name'];
+//echo $_FILES['name'];
+//echo "<td>" . "prueba" . "</td>";
+}
 
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
@@ -46,27 +53,26 @@ echo $_FILES['type'];*/
         
     </thead>
         <?php
-
-            $max = sizeof($videos_list);
-            if(!empty($videos_list))
-            {
-    	        for ($i=0; $i < $max; $i++) {
-                  echo "<tr>";
-                  echo "<td>";
-                  echo "<video width='320' height='240' controls>".
-                          "<source src='/P2_FRONT_TUBEKIDS/videos/" . $videos_list[$i]['name'] . "'". "type='video/mp4'>" .
-                        "</video>" . 
-                        "</td>";
-                  echo "<td>" . $videos_list[$i]['name'] . "</td>";
-                  echo "<td>" .
-                     " <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Editar</a>".
-                     
-                     " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Eliminar</a>".
+        
+        if(!empty($array_videos))
+        {
+          for ($i=0; $i < $max; $i++) {
+              echo "<tr>";
+              echo "<td>";
+              echo "<video width='320' height='240' controls>".
+                   "<source src='data:video/mp4;base64," . base64_encode($array_videos[$i]) . "'". "type='video/mp4'>" .
+                   "</video>" . 
                     "</td>";
-    	            echo "</tr>";
-    	        }
-           }
-
+              echo "<td>" . $databaseVideosDetail[$i]['name'] . "</td>";
+              echo "<td>" .
+                 " <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Editar</a>".
+                 
+                 " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Eliminar</a>".
+                "</td>";
+              echo "</tr>";
+          }
+       }
+      
          ?>
   </table>
 </form>

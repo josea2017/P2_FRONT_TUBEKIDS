@@ -49,6 +49,63 @@ class Video
 
     }
 
+    public function load_videos_from_server($email){
+      $available = false;
+      $user_array = array(
+        'email'      => $email
+      );
+      $body = '{"email":' .'"'. $email . '"' . '}';
+      ////////////////*********Videos count **********////////////////////
+      $url = "http://localhost:8000/api/countVideos";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response_count = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      $json_response_count = json_decode($json_response_count, true);
+
+      /////////*********Videos return *//////////////////
+      $array_videos = array();
+      for($i = 0; $i < $json_response_count; $i++)
+      {
+      $user_array = array(
+        'email'      => $email,
+        'index'      => $i, 
+      );
+      $body = '{"email":' .'"'. $email . '"' . ',"index":' . '"' . $i . '"' . '}';
+
+      $url = "http://localhost:8000/api/loadIndexVideo";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response_video = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      /*
+      echo "<video width='320' height='240' controls>".
+          "<source src='data:video/mp4;base64," . base64_encode($json_response_video) . "'". "type='video/mp4'>" .
+          "</video>";*/
+        array_push($array_videos, $json_response_video);
+
+      }
+      return $array_videos;
+   
+    }
+
+
     public function videos_list(){
       // Array en el que obtendremos los resultados
       $array_videos = array();
@@ -66,17 +123,44 @@ class Video
              // var_dump($archivo[0]);
           }*/ else if (is_readable($path . $archivo)) {
               //echo "No encontrado";
+              $upload_extension =  explode(".", $path . $archivo);
+              $upload_extension = end($upload_extension);
                $array_videos[] = array(
                 "name" => basename($path . $archivo),
                 "size" => filesize($path . $archivo),
-                "tmp_name"   => tempnam($path . $archivo, 'tmp_name'),
-                "type"     => end(explode(".", $path . $archivo)),
+                "tmp_name"   => tempnam($path."/tmp", 'tmp_name'),
+                "type"     => $upload_extension,
               );
           }
       }
+      //"type"     => end(explode(".", $path . $archivo)),
       //var_dump($array_videos);
       $dir->close();
       return $array_videos;
+    }
+
+
+    public function databaseVideosDetail($email){
+
+      $user_array = array(
+        'email'      => $email
+      );
+      $body = '{"email":' .'"'. $email . '"' . '}';
+      $url = "http://localhost:8000/api/databaseVideosDetail";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      $json_response = json_decode($json_response, true);
+      return $json_response;
     }
 
 

@@ -1,6 +1,8 @@
 <script>
 if(localStorage.getItem("login_token")){
   console.log(localStorage.getItem("login_token"));
+  var email_cookie = localStorage.getItem("email");
+  console.log(email_cookie); 
 }else{
   //console.log("No hay datos");
   window.location="../security/login.php";
