@@ -37,6 +37,9 @@ if(isset($_POST['btn_new_video'])){
           <div class="alert alert-success" role="alert">
             Done successfully!
           </div>
+          <script>
+            window.location="./index.php";
+          </script>
         <?php
     }else{
         ?>

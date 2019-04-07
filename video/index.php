@@ -35,11 +35,14 @@ $databaseVideosDetail = $video_model->databaseVideosDetail($email_cookie);
 //echo $_FILES['name'];
 //echo "<td>" . "prueba" . "</td>";
 }
+if(isset($_POST['delete'])){
+ echo "Hola";
+}
 
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
 
-<form>
+<form method="POST">
   <table class="table table-hover text-center" style="text-align: center; margin-top: 0%;" border="1">
     <thead class="table_head">
         <tr>
@@ -65,11 +68,15 @@ $databaseVideosDetail = $video_model->databaseVideosDetail($email_cookie);
                     "</td>";
               echo "<td>" . $databaseVideosDetail[$i]['name'] . "</td>";
               echo "<td>" .
-                 " <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Editar</a>".
-                 
-                 " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Eliminar</a>".
+                 " <a style='font-size: 13px;' class='btn btn-danger' role='button' href='./delete.php?id=" . $databaseVideosDetail[$i]['id'] . 
+                 "&name= " . $databaseVideosDetail[$i]['name'] . "'>Delete</a>".
                 "</td>";
               echo "</tr>";
+              /*
+" <a style='font-size: 13px;' class='btn btn-danger' role='button' href='./eliminar.php?id_producto=" . $lista_productos[$i]['id_producto'] . "&nombre= " 
+. $lista_productos[$i]['nombre'] . "&descripcion= " . $lista_productos[$i]['descripcion'] . "&stock= " . $lista_productos[$i]['stock'] . "&precio= " . $lista_productos[$i]['precio'] . "'>Eliminar</a>"              
+" <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Edit</a>".              
+*/
           }
        }
       
