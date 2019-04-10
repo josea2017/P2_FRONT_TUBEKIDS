@@ -2,11 +2,14 @@
 if(localStorage.getItem("login_token")){
   console.log(localStorage.getItem("login_token"));
   var email_cookie = localStorage.getItem("email");
+  var login_token_cookie = localStorage.getItem("login_token");
   console.log(email_cookie); 
   //var res = str1.concat(str2);
   var string_cookie = "email=".concat(email_cookie);
+  var string_login_token_cookie = "login_token=".concat(login_token_cookie);
   //document.cookie = "cookiename=cookievalue"
   document.cookie = string_cookie;
+  document.cookie = string_login_token_cookie;
   //setcookie("TestCookie", $value);
   
 }else{
@@ -21,9 +24,11 @@ require_once '../shared/header.php';
 require_once '../shared/menu.php';
 require_once '../shared/db.php';
 $email_cookie =  $_COOKIE['email'];
+$login_token_cookie =  $_COOKIE['login_token'];
+//echo $login_token_cookie;
 //echo $email_cookie;
 $response = null;
-$response = $video_model->load_videos_from_server($email_cookie);
+$response = $video_model->load_videos_from_server($email_cookie, $login_token_cookie);
 if($response != null){
 //var_dump($response);
 $array_videos = array();

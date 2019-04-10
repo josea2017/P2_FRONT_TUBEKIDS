@@ -17,7 +17,7 @@ class Video
       
     }
 
-    public function save_video($user_email, $resource, $name, $video){
+    public function save_video($user_email, $resource, $name, $video, $login_token){
       $video_array = array(
         'user_email'      => $user_email,
         'resource'    => $resource,
@@ -32,7 +32,8 @@ class Video
       curl_setopt($curl, CURLOPT_HEADER, false);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($curl, CURLOPT_HTTPHEADER,
-              array("Content-type: application/json"));
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
+              //array("Content-type: application/json", "Authorization: Bearer " . $login_token));
       curl_setopt($curl, CURLOPT_POST, true);
       curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 
@@ -48,8 +49,9 @@ class Video
       return $response;
 
     }
-
-    public function load_videos_from_server($email){
+//curl -H 'Accept: application/json' -H "Authorization: Bearer 
+//${TOKEN}" https://{hostname}/api/myresource
+    public function load_videos_from_server($email, $login_token){
       $available = false;
       $user_array = array(
         'email'      => $email
@@ -63,14 +65,14 @@ class Video
       curl_setopt($curl, CURLOPT_HEADER, false);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($curl, CURLOPT_HTTPHEADER,
-              array("Content-type: application/json"));
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
       curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
       curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
       $json_response_count = curl_exec($curl);
       $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
       curl_close($curl);
       $json_response_count = json_decode($json_response_count, true);
-
+      //echo $json_response_count;
       /////////*********Videos return *//////////////////
       $array_videos = array();
       for($i = 0; $i < $json_response_count; $i++)
@@ -88,10 +90,12 @@ class Video
       curl_setopt($curl, CURLOPT_HEADER, false);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($curl, CURLOPT_HTTPHEADER,
-              array("Content-type: application/json"));
+              //**array("Content-type: application/json"));
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
       curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
       curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
       $json_response_video = curl_exec($curl);
+      //echo $json_response_video;
       $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
       curl_close($curl);
       /*
@@ -102,6 +106,7 @@ class Video
 
       }
       return $array_videos;
+
    
     }
 

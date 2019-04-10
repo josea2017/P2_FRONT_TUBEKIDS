@@ -2,7 +2,9 @@
 if(localStorage.getItem("login_token")){
   console.log(localStorage.getItem("login_token"));
   var string_email_cookie = "email=" + localStorage.getItem("email");
+  var string_login_token_cookie = "login_token=" + localStorage.getItem("login_token");
   document.cookie = string_email_cookie;
+  document.cookie = string_login_token_cookie;
 }else{
   //console.log("No hay datos");
   window.location="../security/login.php";
@@ -16,6 +18,7 @@ require_once '../shared/menu.php';
 require_once '../shared/db.php';
 //$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
+$login_token_cookie =  $_COOKIE['login_token'];
 echo $email_cookie;
 //echo $email_cookie;
 if(isset($_POST['btn_new_video'])){
@@ -24,7 +27,7 @@ if(isset($_POST['btn_new_video'])){
     //Verificar que todos los datos del formulario esten completos
     if($all_data == true){
         //echo "Todos los datos";
-       $response = $video_model->save_video($email_cookie, $resource, $_POST['name'], $_FILES);
+       $response = $video_model->save_video($email_cookie, $resource, $_POST['name'], $_FILES, $login_token_cookie);
         //var_dump($_FILES);
         $file_size =$_FILES['file']['size'];
         $name= $_FILES['file']['name'];
