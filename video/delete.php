@@ -2,7 +2,10 @@
 if(localStorage.getItem("login_token")){
   console.log(localStorage.getItem("login_token"));
   var string_email_cookie = "email=" + localStorage.getItem("email");
+  var login_token_cookie = localStorage.getItem("login_token");
+  var string_login_token_cookie = "login_token=".concat(login_token_cookie);
   document.cookie = string_email_cookie;
+  document.cookie = string_login_token_cookie;
 }else{
   //console.log("No hay datos");
   window.location="../security/login.php";
@@ -16,13 +19,18 @@ require_once '../shared/menu.php';
 require_once '../shared/db.php';
 //$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
+$login_token_cookie =  $_COOKIE['login_token'];
 echo $email_cookie;
 //echo $email_cookie;
 $id = $_GET["id"] ?? '';
 $name = $_GET["name"] ?? '';
 if(isset($_POST["delete"]) && $id != ''){
   //echo "Hola";
-  $response = $video_model->databaseDeleteVideo($id, $email_cookie);
+  $response = $video_model->databaseDeleteVideo($id, $email_cookie, $login_token_cookie);
+  //echo $response;
+  $negative_response = '{"status":"Authorization Token not found"}';
+  if($response != $negative_response)
+  {
   ?>
           <div class="alert alert-success" role="alert">
             Deleted successfully!
@@ -31,6 +39,13 @@ if(isset($_POST["delete"]) && $id != ''){
             window.location="./index.php";
           </script>
   <?php
+  }else{
+    ?>
+      <div class="alert alert-danger" role="alert">
+         Not found!
+      </div>
+    <?php
+  }
   //var_dump($response);
   //echo $id;
 }

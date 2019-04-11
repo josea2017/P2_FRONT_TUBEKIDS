@@ -145,7 +145,7 @@ class Video
     }
 
 
-    public function databaseVideosDetail($email){
+    public function databaseVideosDetail($email, $login_token){
 
       $user_array = array(
         'email'      => $email
@@ -158,7 +158,7 @@ class Video
       curl_setopt($curl, CURLOPT_HEADER, false);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($curl, CURLOPT_HTTPHEADER,
-              array("Content-type: application/json"));
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
       curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
       curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
       $json_response = curl_exec($curl);
@@ -168,7 +168,7 @@ class Video
       return $json_response;
     }
 
-    public function databaseDeleteVideo($id, $email){
+    public function databaseDeleteVideo($id, $email, $login_token){
       //$body = '{"email":' .'"'. $email . '"' . ',"index":' . '"' . $i . '"' . '}';
       $user_array = array(
         'id'      => $id,
@@ -182,7 +182,7 @@ class Video
       curl_setopt($curl, CURLOPT_HEADER, false);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($curl, CURLOPT_HTTPHEADER,
-              array("Content-type: application/json"));
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
       curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
       curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
       $json_response = curl_exec($curl);

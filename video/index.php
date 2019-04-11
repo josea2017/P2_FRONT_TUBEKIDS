@@ -34,7 +34,7 @@ if($response != null){
 $array_videos = array();
 $array_videos = $response;
 $max = sizeof($response);
-$databaseVideosDetail = $video_model->databaseVideosDetail($email_cookie);
+$databaseVideosDetail = $video_model->databaseVideosDetail($email_cookie, $login_token_cookie);
 //echo $max;
 //$name= $value['file']['name'];
 //echo $_FILES['name'];
