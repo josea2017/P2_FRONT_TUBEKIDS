@@ -2,6 +2,13 @@
 $title='TubeKids-Register';
 require_once '../shared/db.php';
 require_once '../shared/header.php';
+$country_codes = array
+  (
+  [("C.R"), ("../assets/images/costa_rica.png"), (506)],
+  [("MEX"), ("../assets/images/costa_rica.png"), (52)]
+  );
+ /* $value = "../assets/images/costa_rica.png";
+  echo "<img src='" . $value ."' width='40px' height='40px' />";*/
 //$nombre_nuevo = $_POST['nombre_nuevo'] ?? '';
 if(isset($_POST['btn_register'])){
     $value_verify_all_data = $register_model->verify_all_data($_POST['name'], $_POST['last_name'], $_POST['email'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $_POST['password'], $_POST['confirm_password']);
@@ -106,7 +113,20 @@ if(isset($_POST['btn_register'])){
         <td>Phone: <input type="text" id="phone_number" name="phone_number" placeholder="Phone number" value="<?= isset($_POST['phone_number']) ? $_POST['phone_number'] : ''; ?>"></td>
       </tr>
       <tr>
-        <td>Country code: <input type="text" id="country_code" name="country_code" placeholder="Country code" value="<?= isset($_POST['country_code']) ? $_POST['country_code'] : ''; ?>"></td>
+        <td>Country code: 
+          <select name="country_code" style="width: 180px; margin-left: 50px;">
+            <?php foreach ($country_codes as $country)
+            {//echo '<img src="../admin/upload/{$display_img}" width="120px" height="120px" />';
+              echo "<option value='".$country[2]."'>" . $country[0] . " - " . $country[2] . "</option>";
+              
+              /* $value = "../assets/images/costa_rica.png";
+            echo "<img src='" . $value ."' width='40px' height='40px' />"; 
+                <td>Country code: <input type="text" id="country_code" name="country_code" placeholder="Country code" value="<?= isset($_POST['country_code']) ? $_POST['country_code'] : ''; ?>"></td>
+            */
+            }
+            ?>
+          </select>
+      </td>
       </tr>
       <tr>
         <td>Birthday: <input type="date" id="birthday" name="birthday" placeholder="Birthday" value="<?= isset($_POST['birthday']) ? $_POST['birthday'] : ''; ?>"></td>

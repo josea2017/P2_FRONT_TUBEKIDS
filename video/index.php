@@ -110,15 +110,13 @@ if(isset($_POST['delete'])){
                     "</td>";
               echo "<td>" . $responseYouTube[$i]['name'] . "</td>";
               echo "<td>" .
-                " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Delete</a>".
+                " <a style='font-size: 13px;' class='btn btn-danger' role='button' href='./delete_youtube.php?id=". $responseYouTube[$i]['id'] .
+                  "&name= " . $responseYouTube[$i]['name'] . "'>Delete</a>".
+                  " <a style='font-size: 13px;' class='btn btn-warning' role='button' href='./edit_youtube.php?id=". $responseYouTube[$i]['id'] .
+                  "&name= " . $responseYouTube[$i]['name'] . "'>Edit</a>".
                 "</td>";
               echo "</tr>";
-              /*
-                    <iframe id="ytplayer" type="text/html" width="<?php echo $width ?>" height="<?php echo $height ?>"
-                        src="https://www.youtube.com/embed/<?php echo $id ?>?rel=0&showinfo=0&color=white&iv_load_policy=3"
-                        frameborder="0" allowfullscreen>
-                    </iframe> 
-              */
+             
           }
 
        }

@@ -259,6 +259,56 @@ class Video
     }
 
 
+    public function databaseDeleteYouTubeVideo($id, $login_token){
+      //$body = '{"email":' .'"'. $email . '"' . ',"index":' . '"' . $i . '"' . '}';
+      $user_array = array(
+        'id'      => $id,
+      );
+      //echo $id;
+      $body = '{"id":' .'"'. $id . '"' . '}';
+      $url = "http://localhost:8000/api/tubesDelete";    
+      $content = json_encode($user_array);
+      $curl = curl_init($url);
+
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      //$json_response = json_decode($json_response, true);
+      return $json_response;
+    }
+
+    public function databaseEditYouTubeVideo($id, $new_name, $login_token){
+      //$body = '{"email":' .'"'. $email . '"' . ',"index":' . '"' . $i . '"' . '}';
+      $user_array = array(
+        'id'      => $id,
+        'name'    => $new_name,
+      );
+      //echo $id;
+      $body = '{"id":' .'"'. $id . '"' . ',"name":' . '"' . $new_name . '"' .'}';
+      $url = "http://localhost:8000/api/tubesEdit";    
+      $content = json_encode($user_array);
+      $curl = curl_init($url);
+
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      //$json_response = json_decode($json_response, true);
+      return $json_response;
+    }
+
+
 
   }
 }
