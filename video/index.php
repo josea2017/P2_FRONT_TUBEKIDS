@@ -28,7 +28,10 @@ $login_token_cookie =  $_COOKIE['login_token'];
 //echo $login_token_cookie;
 //echo $email_cookie;
 $response = null;
+$responseYouTube = null;
 $response = $video_model->load_videos_from_server($email_cookie, $login_token_cookie);
+$responseYouTube = $video_model->load_youtube_videos($email_cookie, $login_token_cookie);
+//var_dump($responseYouTube);
 if($response != null){
 //var_dump($response);
 $array_videos = array();
@@ -47,6 +50,8 @@ if(isset($_POST['delete'])){
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
 
+ 
+
 <form method="POST">
   <table class="table table-hover text-center" style="text-align: center; margin-top: 0%;" border="1">
     <thead class="table_head">
@@ -56,12 +61,14 @@ if(isset($_POST['delete'])){
         <tr>
           <th>RESOURCE</th>
           <th>NAME</th>
-          <th><a class="btn btn-success" name="producto_nuevo" href="../video/new.php">Add new</a></th>
+          <th><a class="btn btn-success" name="producto_nuevo" href="../video/new.php">Add Own</a>
+              <a class="btn btn-success" name="producto_nuevo" href="../video/new_youtube.php">Add YouTube</a>
+          </th>
         </tr>
         
     </thead>
         <?php
-        
+        //Own videos
         if(!empty($array_videos))
         {
           for ($i=0; $i < $max; $i++) {
@@ -84,10 +91,45 @@ if(isset($_POST['delete'])){
 */
           }
        }
+       //YouTube Videos
+       if(!empty($responseYouTube))
+       {
+          $maxTube = sizeof($responseYouTube);
+          for ($i=0; $i < $maxTube; $i++) {
+              $url = $responseYouTube[$i]['resource'];
+              preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
+              $id = $matches[1];
+              $width = '320px';
+              $height = '240px';
+              echo "<tr>";
+              echo "<td>";
+              echo "<iframe id='ytplayer' type='text/html' width='320px' height='240px'".
+                  "src='https://www.youtube.com/embed/" . $id . "?rel=0&showinfo=0&color=white&iv_load_policy=3" . "'" .
+                  "frameborder='0' allowfullscreen>" .
+                  "</iframe>" . 
+                    "</td>";
+              echo "<td>" . $responseYouTube[$i]['name'] . "</td>";
+              echo "<td>" .
+                " <a style='font-size: 13px;' class='btn btn-danger' role='button' href=''>Delete</a>".
+                "</td>";
+              echo "</tr>";
+              /*
+                    <iframe id="ytplayer" type="text/html" width="<?php echo $width ?>" height="<?php echo $height ?>"
+                        src="https://www.youtube.com/embed/<?php echo $id ?>?rel=0&showinfo=0&color=white&iv_load_policy=3"
+                        frameborder="0" allowfullscreen>
+                    </iframe> 
+              */
+          }
+
+       }
       
          ?>
   </table>
 </form>
+
+
+
+
 
  <?php
  require_once '../shared/footer.php';
