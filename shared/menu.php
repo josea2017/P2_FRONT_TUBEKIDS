@@ -18,6 +18,7 @@
         <?php
         $menu = [
           'Home'       => '../home/index.php',
+          'Profile'     => '../profile/index.php',
           'Video'     => '../video/index.php',
           'Logout'     => '../security/logout.php',
         ];

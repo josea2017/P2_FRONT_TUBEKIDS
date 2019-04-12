@@ -30,5 +30,15 @@ require_once './shared/header.php';
   </div>
 </nav>
 
+<div class="welcome_box" style="display: flex; position: absolute; margin-top: 5%; margin-left: 34%;">
+            <h1 class="text-info">WELCOME TO TUBEKIDS</h1>
+</div>
+
+<div class="welcome_image_box" style="display: flex; position: absolute; margin-top: 15%; margin-left: 40%;">
+  <img src="./assets/images/welcome_icon.png">
+</div>
+
+
+
 
  <?php require_once 'shared/footer.php'; ?>
