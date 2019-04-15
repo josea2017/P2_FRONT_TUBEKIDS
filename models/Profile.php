@@ -90,6 +90,7 @@ class Profile
       curl_close($curl);
       //$json_response = json_decode($json_response, true);
       return $json_response;
+      //var_dump($json_response);
     }
 
 

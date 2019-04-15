@@ -1,5 +1,5 @@
 <script>
-if(localStorage.getItem("login_token")){
+if(localStorage.getItem("two_factor")){
   console.log(localStorage.getItem("login_token"));
   var email_cookie = localStorage.getItem("email");
   var login_token_cookie = localStorage.getItem("login_token");
@@ -17,6 +17,7 @@ if(localStorage.getItem("login_token")){
 }
 </script>
 <?php 
+//if(localStorage.getItem("login_token"))
 $title='TubeKids-EditProfile';
 $tituloPagina = 'Edit Profile';
 require_once '../shared/header.php';
@@ -25,6 +26,7 @@ require_once '../shared/db.php';
 $email_cookie =  $_COOKIE['email'];
 $login_token_cookie =  $_COOKIE['login_token'];
 $profile = $profile_model->getProfile($email_cookie, $login_token_cookie);
+$phone_number = $profile['user']['phone_number'];
 //var_dump($profile);
 $country_codes = array
   (
@@ -33,9 +35,9 @@ $country_codes = array
   );
 
   if(isset($_POST['btn_edit'])){
-        if($profile_model->verifyAllData($_POST['name'], $_POST['last_name'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'])){
+        if($profile_model->verifyAllData($_POST['name'], $_POST['last_name'], $phone_number, $_POST['country_code'], $_POST['birthday'])){
             //echo "bien";
-            $profile_model->update_profile($email_cookie, $_POST['name'], $_POST['last_name'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $login_token_cookie);
+            $profile_model->update_profile($email_cookie, $_POST['name'], $_POST['last_name'], $phone_number, $_POST['country_code'], $_POST['birthday'], $login_token_cookie);
             return header("Location: ./index.php");
         }else{
             ?>
@@ -87,7 +89,7 @@ $country_codes = array
               </tr>
               <tr>
                 <td style="text-align: left;">
-                  Phone: <input type="text" id="phone_number" name="phone_number" autofocus placeholder="Phone number" value="<?= isset($_POST['phone_number']) ? $_POST['phone_number'] : $profile['user']['phone_number']; ?>"></td>
+                  Phone: <input type="text" disabled="disabled" id="phone_number" name="phone_number" autofocus placeholder="Phone number" value="<?= isset($_POST['phone_number']) ? $_POST['phone_number'] : $profile['user']['phone_number']; ?>"></td>
                 </td>
               </tr>
               <tr>

@@ -3,7 +3,8 @@ $title='TubeKids-Login';
 require_once '../shared/db.php';
 require_once '../shared/header.php';
 $email = $_GET["email"] ?? '';
-
+/*localStorage.setItem('login_token', '<?php echo $login_user_token['token']; ?>');
+localStorage.setItem('email', '<?php echo $_POST['email']; ?>');*/
 if(isset($_POST['btn_login'])){
 $verify_all_data = $login_model->verify_all_data($_POST['email'], $_POST['password']);
 //Verificamos que tenemos todos los datos completos
@@ -19,7 +20,8 @@ if($verify_all_data == true){
       <script>
         localStorage.setItem('login_token', '<?php echo $login_user_token['token']; ?>');
         localStorage.setItem('email', '<?php echo $_POST['email']; ?>');
-        window.location="../home/index.php";
+        //window.location="../home/index.php";
+        window.location="./authy_2fa.php";
       </script>
     <?php
   }else{
@@ -53,8 +55,8 @@ if($verify_all_data == true){
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="caja_register" style="display: flex; position: absolute; margin-top: 13%; margin-left: 42%;">
-    <img src="../assets/images/login_usuario.png">
+  <div class="caja_register" style="display: flex; position: absolute; margin-top: 13%; margin-left: 41%;">
+    <img src="../assets/images/login_user.png">
   </div>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -95,8 +97,8 @@ if($verify_all_data == true){
 </form>
 
 <script>
-    var token = localStorage.getItem('login_token');
-    document.write(token);
+    //var token = localStorage.getItem('login_token');
+    //document.write(token);
 </script>
 
  <?php 

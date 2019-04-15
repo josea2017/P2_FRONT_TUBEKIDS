@@ -1,5 +1,5 @@
 <script>
-if(localStorage.getItem("login_token")){
+if(localStorage.getItem("two_factor")){
   console.log(localStorage.getItem("login_token"));
   var string_email_cookie = "email=" + localStorage.getItem("email");
   var string_login_token_cookie = "login_token=" + localStorage.getItem("login_token");
@@ -11,6 +11,7 @@ if(localStorage.getItem("login_token")){
 }
 </script>
 <?php 
+//if(localStorage.getItem("login_token"))
 $title='TubeKids-NewYouTubeVideo';
 $tituloPagina = 'New YouTube Video';
 require_once '../shared/header.php';

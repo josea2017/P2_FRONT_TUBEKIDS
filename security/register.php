@@ -27,6 +27,7 @@ if(isset($_POST['btn_register'])){
             $response = $register_model->register($_POST['name'], $_POST['last_name'], $_POST['email'], $_POST['phone_number'], $_POST['country_code'], $_POST['birthday'], $_POST['password'], $_POST['confirm_password']);
             $register_model->create_user_video_folder($_POST['email']);
             //var_dump($response);
+             $register_model->registerAuthyUser($_POST['email']);
              return header("Location: ./login.php?email=" . $_POST['email']);
           }else{
               ?>

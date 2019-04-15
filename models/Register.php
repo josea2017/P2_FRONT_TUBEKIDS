@@ -163,6 +163,58 @@ class Register
 
     }
 
+
+    public function registerAuthyUser($user_email){
+      $user_array = array(
+        'email'      => $user_email
+      );
+
+      $url = "http://localhost:8000/api/registerAuthyUser";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_POST, true);
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+
+      $json_response = curl_exec($curl);
+
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+      curl_close($curl);
+      $response = json_decode($json_response, true);
+      return $response;
+
+    }
+
+    public function verifyAuthyToken($user_email, $authy_token){
+      $user_array = array(
+        'email'      => $user_email,
+        'authy_id'      => $authy_token
+      );
+
+      $url = "http://localhost:8000/api/verifyAuthyToken";    
+      $content = json_encode($user_array);
+
+      $curl = curl_init($url);
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json"));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      //$response = json_decode($json_response, true);
+      return $json_response;
+      //var_dump($json_response);
+
+    }
+
     
 
   }
