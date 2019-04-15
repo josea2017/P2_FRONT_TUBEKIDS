@@ -18,6 +18,7 @@ if(localStorage.getItem("login_token")){
 $title='TubeKids-2FA';
 require_once '../shared/db.php';
 require_once '../shared/header.php';
+$email_cookie =  $_COOKIE['email'];
 /*
 <script>
 if(localStorage.getItem("login_token")){
@@ -40,6 +41,7 @@ if(isset($_POST['btn_authy'])){
         //echo "Bien";
         //true or false
         $authy_token_access = $register_model->verifyAuthyToken($email_cookie, $_POST['authy_token']);
+        var_dump($authy_token_access);
         //var_dump($authy_token_access);
         if($authy_token_access == "true"){
             //echo "Autorizado";
