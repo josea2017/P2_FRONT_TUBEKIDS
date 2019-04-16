@@ -83,6 +83,8 @@ if(isset($_POST['delete'])){
               echo "<td>" .
                  " <a style='font-size: 16px;' class='btn btn-danger' role='button' href='./delete.php?id=" . $databaseVideosDetail[$i]['id'] . 
                  "&name= " . $databaseVideosDetail[$i]['name'] . "'>Delete</a>".
+                 " <a style='font-size: 16px; width: 70px;' class='btn btn-warning' role='button' href='./edit.php?id=". $databaseVideosDetail[$i]['id'] .
+                  "&name= " . $databaseVideosDetail[$i]['name'] . "'>Edit</a>".
                 "</td>";
               echo "</tr>";
               /*

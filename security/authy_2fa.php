@@ -41,7 +41,7 @@ if(isset($_POST['btn_authy'])){
         //echo "Bien";
         //true or false
         $authy_token_access = $register_model->verifyAuthyToken($email_cookie, $_POST['authy_token']);
-        var_dump($authy_token_access);
+        //var_dump($authy_token_access);
         //var_dump($authy_token_access);
         if($authy_token_access == "true"){
             //echo "Autorizado";

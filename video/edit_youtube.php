@@ -21,7 +21,7 @@ require_once '../shared/db.php';
 //$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
 $login_token_cookie =  $_COOKIE['login_token'];
-echo $email_cookie;
+//echo $email_cookie;
 //echo $email_cookie;
 $id = $_GET["id"] ?? '';
 $name = $_GET["name"] ?? '';
@@ -35,7 +35,7 @@ if(isset($_POST["edit"]) && $id != '' && $new_name != ''){
   {
   ?>
           <div class="alert alert-success" role="alert">
-            Deleted successfully!
+            Edited successfully!
           </div>
           <script>
             window.location="./index.php";

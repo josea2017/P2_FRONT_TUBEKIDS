@@ -21,7 +21,7 @@ require_once '../shared/db.php';
 //$user_email = $_GET["user_email"] ?? '';
 $email_cookie =  $_COOKIE['email'];
 $login_token_cookie =  $_COOKIE['login_token'];
-echo $email_cookie;
+//echo $email_cookie;
 //echo $email_cookie;
 $id = $_GET["id"] ?? '';
 $name = $_GET["name"] ?? '';

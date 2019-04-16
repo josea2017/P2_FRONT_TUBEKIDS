@@ -309,6 +309,32 @@ class Video
     }
 
 
+    public function databaseEditVideo($id, $new_name, $login_token){
+      //$body = '{"email":' .'"'. $email . '"' . ',"index":' . '"' . $i . '"' . '}';
+      $user_array = array(
+        'id'      => $id,
+        'name'    => $new_name,
+      );
+      //echo $id;
+      $body = '{"id":' .'"'. $id . '"' . ',"name":' . '"' . $new_name . '"' .'}';
+      $url = "http://localhost:8000/api/videoEdit";    
+      $content = json_encode($user_array);
+      $curl = curl_init($url);
+
+      curl_setopt($curl, CURLOPT_HEADER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_HTTPHEADER,
+              array("Content-type: application/json", "Authorization: Bearer " . $login_token));
+      curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+      $json_response = curl_exec($curl);
+      $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+      curl_close($curl);
+      //$json_response = json_decode($json_response, true);
+      return $json_response;
+    }
+
+
 
   }
 }
