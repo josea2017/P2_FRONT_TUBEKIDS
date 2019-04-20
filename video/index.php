@@ -48,6 +48,21 @@ if(isset($_POST['delete'])){
  echo "Hola";
 }
 
+$txtSearch = '';
+if(isset($_POST['btnSearch']) && $_POST['txtSearch'] != '')
+{
+  $txtSearch = $_POST['txtSearch'];
+  //echo $txtSearch;
+  //Indicadir "i" para no realizar diferencia entre mayúsculas y minisculas
+  /*$valor = preg_match("/$txtSearch/i", "asd");
+  if($valor == true){
+    echo "HAY COINCIDENCIA";
+  }else{
+    echo "NO HAY COINCIDENCIA";
+  }*/
+
+}
+
  ?>
  <link rel="stylesheet" type="text/css" href="../assets/css/style_index_producto.css">
 
@@ -58,6 +73,10 @@ if(isset($_POST['delete'])){
     <thead class="table_head">
         <tr>
           <th style="text-align: left;" colspan="3">PLAYLIST</th>
+          <div style="display: inline-flex; position: absolute; margin-left: 73.5%; margin-top: 3px;">
+            <input type="txt" name="txtSearch" placeholder="Enter name to search" value="<?= isset($_POST['txtSearch']) ? $_POST['txtSearch'] : ''; ?>">
+            <button style="margin-left: 2%;" class="btn btn-primary" type="submit" name="btnSearch">Search</button>
+          </div>
         </tr>
         <tr>
           <th>RESOURCE</th>
@@ -70,9 +89,11 @@ if(isset($_POST['delete'])){
     </thead>
         <?php
         //Own videos
+        
         if(!empty($array_videos))
         {
           for ($i=0; $i < $max; $i++) {
+            if(preg_match("/$txtSearch/i", $databaseVideosDetail[$i]['name'])){
               echo "<tr>";
               echo "<td>";
               echo "<video width='320' height='240' controls>".
@@ -87,18 +108,16 @@ if(isset($_POST['delete'])){
                   "&name= " . $databaseVideosDetail[$i]['name'] . "'>Edit</a>".
                 "</td>";
               echo "</tr>";
-              /*
-" <a style='font-size: 13px;' class='btn btn-danger' role='button' href='./eliminar.php?id_producto=" . $lista_productos[$i]['id_producto'] . "&nombre= " 
-. $lista_productos[$i]['nombre'] . "&descripcion= " . $lista_productos[$i]['descripcion'] . "&stock= " . $lista_productos[$i]['stock'] . "&precio= " . $lista_productos[$i]['precio'] . "'>Eliminar</a>"              
-" <a style='font-size: 13px;' class='btn btn-primary' role='button' href=''>Edit</a>".              
-*/
+            }  
           }
        }
        //YouTube Videos
        if(!empty($responseYouTube))
        {
           $maxTube = sizeof($responseYouTube);
+          //echo $txtSearch;
           for ($i=0; $i < $maxTube; $i++) {
+            if(preg_match("/$txtSearch/i", $responseYouTube[$i]['name'])){
               $url = $responseYouTube[$i]['resource'];
               preg_match('/[\\?\\&]v=([^\\?\\&]+)/', $url, $matches);
               $id = $matches[1];
@@ -119,7 +138,7 @@ if(isset($_POST['delete'])){
                   "&name= " . $responseYouTube[$i]['name'] . "'>Edit</a>".
                 "</td>";
               echo "</tr>";
-             
+            } 
           }
 
        }
