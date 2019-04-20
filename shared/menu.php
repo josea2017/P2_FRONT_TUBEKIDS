@@ -19,6 +19,7 @@
         $menu = [
           'Home'       => '../home/index.php',
           'Profile'     => '../profile/index.php',
+          'SubAccounts'     => '../sub/index.php',
           'Video'     => '../video/index.php',
           'Logout'     => '../security/logout.php',
         ];
